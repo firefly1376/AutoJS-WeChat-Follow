@@ -1,2 +1,35 @@
-# AutoJS-WeChat-Follow
-基于 Auto.js Pro 的微信自动接龙脚本
+# 微信极速自动接龙助手
+
+这是一个基于 Auto.js Pro 编写的微信自动化脚本。支持毫秒级响应、可视化日志悬浮窗、以及文本替换。本人实质菜鸡欢迎各位大佬指导！
+
+## 环境依赖
+
+特别鸣谢bowyn96（老猫）的Auto.js Pro 离线修改版！
+请在使用前，前往以下开源项目下载Auto.js Pro 离线修改版：
+[bowyn96/AutoJsPro-Advanced-Offline](https://github.com/bowyn96/AutoJsPro-Advanced-Offline)
+
+## 版本说明
+a.b.c.dd a为本软件迭代版本，b.c.dd为对应的手机微信版本，请保持一致！
+如1.8.0.71对应的手机微信版本为8.0.71
+
+## 使用方法
+
+1. 安装上述提到的 Auto.js Pro 修改版，并开启**无障碍服务**与**悬浮窗权限**。
+2. 将本项目中的 `wechat_follow.js` ，`wechat_follow_with_content.js` 导入到 Auto.js Pro 中。
+3. 如果不需要改内容（即直接接龙群备注）则直接运行`wechat_follow.js`即可。
+   如果要改接龙内容，用Auto.js pro编辑`wechat_follow_with_content.js`，在第 15 行 `var jielongContent = "..."` 处修改为你想要自动填写的文本，保存后运行。
+4. 运行脚本，屏幕会出现悬浮控制面板和日志窗口。
+5. 进入微信接龙群聊界面，点击悬浮窗的 **[开始]**。
+6. 等待群友发起接龙，等待软件完成。
+
+## 对于小米部分机型的特别说明！
+小米有些机型的无障碍服务老是会自动关闭（比如我的K70pro），可以去酷安下载“苏桐换明日”大佬开发的“无障碍管理器”，用Shizuku授权后可以给Auto.js pro的无障碍保活。
+
+## 免责声明 
+
+1. 本项目仅供**编程学习与技术交流**使用，作者不对使用该脚本产生的任何后果负责。本项目遵循MIT开源规则。
+2. 微信官方对自动化脚本有严格的风控机制。频繁或恶意使用自动化工具可能导致微信账号被限制、封禁。**请合理使用，风险自担**。
+3. 千万不要在模拟器里面登微信！！！秒封。
+
+---
+*Crafted by firefly_celestine* *Last Updated: 2026-05-21*
