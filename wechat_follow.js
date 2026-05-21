@@ -85,7 +85,7 @@ function stopMonitor() {
 function monitorJielong() {
     while (isRunning) {
         // 设置检测超时
-        var bjpBtn = id("bjp").findOne(20); 
+        var bjpBtn = id("bjp").findOne(200); 
         
         if (bjpBtn) {
             try {
@@ -130,7 +130,7 @@ function monitorJielong() {
         }
         
         //设置轮询间隔
-        sleep(20); 
+        sleep(5); 
     }
 }
 

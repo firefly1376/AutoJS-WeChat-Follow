@@ -14,7 +14,7 @@ console.log("请前往微信接龙群聊后，点击悬浮窗的[开始]");
 // ================= 全局配置区 =================
 var isRunning = false;
 var monitorThread = null;
-var jielongContent = "这里填入你需要替换的新接龙内容"; // ⬅️ 在这里修改你想发送的文字
+var jielongContent = "5201314陈一诺"; // ⬅️ 在这里修改你想发送的文字
 // ============================================
 
 // 创建悬浮窗界面（控制面板）
@@ -115,7 +115,7 @@ function monitorJielong() {
                         
                         // setText直接在底层替换原有文本，不需要模拟全选和删除，速度最快
                         inputBox.setText(jielongContent);
-                        console.log("📝 文本已替换");
+                        console.log("📝 文本已秒替换");
                     } else {
                         console.error("❌ 丢失目标: 未找到[填写框]");
                     }
