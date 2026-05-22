@@ -9,10 +9,10 @@ if (!floaty.checkPermission()) {
 // 开启内置可视化监控日志窗口
 console.show();
 console.info("初始化完成。");
-console.log("请前往微信接龙群聊后，点击悬浮窗的[开始]");
+console.log("监测将自动开始");
 
 // 全局变量控制状态
-var isRunning = false;
+var isRunning = true;
 var monitorThread = null;
 
 // 创建悬浮窗界面（控制面板）
@@ -43,6 +43,12 @@ window.action_bar.setOnTouchListener(function(view, event) {
     }
     return true;
 });
+
+//自动开启接龙子线程
+monitorThread = threads.start(function() {
+    monitorJielong();
+});
+console.info("⚡ 扫描中...");
 
 // 按钮点击事件
 window.start.click(() => {

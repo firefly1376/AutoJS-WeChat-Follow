@@ -14,7 +14,7 @@ console.log("请前往微信接龙群聊后，点击悬浮窗的[开始]");
 // ================= 全局配置区 =================
 var isRunning = false;
 var monitorThread = null;
-var jielongContent = "5201314陈一诺"; // ⬅️ 在这里修改你想发送的文字
+var jielongContent = "这里填入你需要替换的新接龙内容"; // ⬅️ 把引号内换成你想发送的文字
 // ============================================
 
 // 创建悬浮窗界面（控制面板）
@@ -87,7 +87,7 @@ function stopMonitor() {
 function monitorJielong() {
     while (isRunning) {
         // 设置检测超时
-        var bjpBtn = id("bjp").findOne(20); 
+        var bjpBtn = id("bjp").text("参与接龙").findOne(200); 
         
         if (bjpBtn) {
             try {
@@ -107,19 +107,23 @@ function monitorJielong() {
                          if (b) click(b.centerX(), b.centerY());
                     }
                     
-                    // ================= 新增：自动替换文本逻辑 =================
-                    // 动态捕获填写框 (guc)
-                    var inputBox = id("guc").findOne(2000);
-                    if (inputBox) {
-                        sleep(50); // 极短延迟：等待输入框彻底渲染完毕获取焦点
+                    // 文本替换逻辑
+                    // 1. 先用 findOne 阻塞等待，确保页面上至少有一个 guc 存在
+                    if (id("guc").findOne(2000)) {
+                        sleep(100); // 激进延迟0.1秒：给微信留一点时间把新的一行彻底渲染出来
                         
-                        // setText直接在底层替换原有文本，不需要模拟全选和删除，速度最快
-                        inputBox.setText(jielongContent);
-                        console.log("📝 文本已秒替换");
+                        // 2. 用 find() 抓取当前屏幕上所有的 guc 控件，返回一个数组
+                        var allBoxes = id("guc").find(); 
+                        
+                        if (allBoxes.length > 0) {
+                            // 3. 直接通过数组的 length - 1 获取最后一个元素，这必然是刚生成的最新行
+                            var lastBox = allBoxes[allBoxes.length - 1];
+                            lastBox.setText(jielongContent);
+                            console.log("📝 文本已替换");
+                        }
                     } else {
                         console.error("❌ 丢失目标: 未找到[填写框]");
                     }
-                    // ========================================================
 
                     // 动态捕获发送按钮
                     var sendBtn = id("fp").findOne(2000);
@@ -146,7 +150,7 @@ function monitorJielong() {
         }
         
         //设置轮询间隔
-        sleep(20); 
+        sleep(5); 
     }
 }
 

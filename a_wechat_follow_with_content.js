@@ -9,11 +9,13 @@ if (!floaty.checkPermission()) {
 // 开启内置可视化监控日志窗口
 console.show();
 console.info("初始化完成。");
-console.log("请前往微信接龙群聊后，点击悬浮窗的[开始]");
+console.log("监测将自动开始");
 
-// 全局变量控制状态
-var isRunning = false;
+// ================= 全局配置区 =================
+var isRunning = true;
 var monitorThread = null;
+var jielongContent = "这里填入你需要替换的新接龙内容"; // ⬅️ 在这里修改你想发送的文字
+// ============================================
 
 // 创建悬浮窗界面（控制面板）
 var window = floaty.window(
@@ -43,6 +45,12 @@ window.action_bar.setOnTouchListener(function(view, event) {
     }
     return true;
 });
+
+//自动开启接龙子线程
+monitorThread = threads.start(function() {
+    monitorJielong();
+});
+console.info("⚡ 扫描中...");
 
 // 按钮点击事件
 window.start.click(() => {
@@ -105,17 +113,35 @@ function monitorJielong() {
                          if (b) click(b.centerX(), b.centerY());
                     }
                     
+                    // 文本替换逻辑
+                    // 1. 先用 findOne 阻塞等待，确保页面上至少有一个 guc 存在
+                    if (id("guc").findOne(2000)) {
+                        sleep(100); // 激进延迟0.1秒：给微信留一点时间把新的一行彻底渲染出来
+                        
+                        // 2. 用 find() 抓取当前屏幕上所有的 guc 控件，返回一个数组
+                        var allBoxes = id("guc").find(); 
+                        
+                        if (allBoxes.length > 0) {
+                            // 3. 直接通过数组的 length - 1 获取最后一个元素，这必然是刚生成的最新行
+                            var lastBox = allBoxes[allBoxes.length - 1];
+                            lastBox.setText(jielongContent);
+                            console.log("📝 文本已替换");
+                        }
+                    } else {
+                        console.error("❌ 丢失目标: 未找到[填写框]");
+                    }
+
                     // 动态捕获发送按钮
                     var sendBtn = id("fp").findOne(2000);
                     if (sendBtn) {
-                        sleep(100); // 延迟0.1秒：等待加号按下的输入框弹出动画
+                        sleep(100); // 延迟0.1秒：等待文字填充生效及界面重绘
                         
                         if(!sendBtn.click()){
                              let b = sendBtn.bounds();
                              if (b) click(b.centerX(), b.centerY());
                         }
                         
-                        console.info("接龙成功！");
+                        console.info("🎉 接龙成功！");
                         stopMonitor(); 
                         break; 
                     } else {
